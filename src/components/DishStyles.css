@@ -1,0 +1,6 @@
+.commentsList {
+    text-align: left;
+}
+.commentsList > *{
+    border: none !important;
+}
