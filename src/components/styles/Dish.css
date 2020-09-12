@@ -1,6 +1,10 @@
 .commentsList {
     text-align: left;
+    list-style-type: none;
 }
 .commentsList > *{
     border: none !important;
+}
+.selectedDish{
+    margin: 0 auto !important;
 }

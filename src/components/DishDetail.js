@@ -1,56 +1,80 @@
-import React, { Component } from 'react';
-import {  CardImg, CardText, CardBody,
- CardTitle, Col, Row, ListGroup, ListGroupItem } from 'reactstrap';
-import moment from 'moment';
-import './DishStyles.css';
-class DishDetail extends Component {
-    convertDate(date){return moment(date).format("MMM DD, YYYY");}
-    render() {
-        const comments = this.props.selectedDish.comments.map((comment) => {
-            if(comment){
-                return (
-                    <ListGroup flush key={comment.id} className="commentsList">
-                        <ListGroupItem>
-                            {comment.comment}
-                        </ListGroupItem>
-                        <ListGroupItem>
-                            -- {comment.author}, {this.convertDate(comment.date)}
-                        </ListGroupItem>
-                    </ListGroup>
-                );
-            }else{
-                return(
-                    <div></div>
-                )
-            }
-        });
+import React from 'react';
+import {CardImg, CardText, CardBody,
+    CardTitle, Col, Row} from 'reactstrap';
+import moment            from 'moment';
+import './styles/Dish.css';
+/**
+ * Desde el componente padre pasaremos el selectedDish
+ * y aquí sólo nos encargaremos de renderizar la 
+ * selección. Debemos retornar un <div> vacío
+ * porque el componente debe ser importado siempre
+ * desde el componente padre. 
+ * De este modo, el componente cambiará reactivamente
+ * si se presiona un elemento del menú. En caso contrario,
+ * se mostrará el div vacío
+ */
+
+const convertDate = (date) => {return moment(date).format("MMM DD, YYYY")}
+const RenderDish = ({dish}) => {
+    return(
+        <Col className="col-12 col-md-5 m-1">
+            <CardImg top src={dish.image} alt={dish.name}/>
+            <CardBody>
+                <CardTitle>
+                    {dish.name}
+                </CardTitle>
+                <CardText>
+                    {dish.description}
+                </CardText>
+            </CardBody>
+        </Col>
+    );
+}
+const RenderComments = ({dishComments}) => {
+    var comments = dishComments.map((comment) => {
+        if(comment){
+            return (
+                <ul flush key={comment.id} className="commentsList">
+                    <li>
+                        {comment.comment}
+                    </li>
+                    <li>
+                        -- {comment.author}, {convertDate(comment.date)}
+                    </li>
+                </ul>
+            );
+        }else{
+            return(
+                <div></div>
+            )
+        }
+    });
+    return(
+            <Col className="col-12 col-md-5 m-1">
+                <CardBody>
+                    <CardTitle>
+                        Comments
+                    </CardTitle>
+                    { comments }
+                </CardBody>
+            </Col>
+    );
+}
+const DishDetail = (props) => {
+    if(props.dish){
         return (
-            <Row className="container col-12">
-                <Col className="col-12 col-md-5 m-1">
-                    <CardImg top src={this.props.selectedDish.image} alt={this.props.selectedDish.name}/>
-                    <CardBody>
-                        <CardTitle>
-                            {this.props.selectedDish.name}
-                        </CardTitle>
-                        <CardText>
-                            {this.props.selectedDish.description}
-                        </CardText>
-                    </CardBody>
-                </Col>
-                <Col className="col-12 col-md-6 m-1">
-                    <CardBody>
-                        <CardTitle>
-                            <h4>Comments</h4>
-                        </CardTitle>
-                        <CardText>
-                            { comments }
-                        </CardText>
-                    </CardBody>
-                </Col>
-            </Row>
+            <div className="container">
+                <div className="row">
+                    <Row className="selectedDish">
+                        <RenderDish dish={props.dish}/>
+                        <RenderComments dishComments={props.dish.comments}/>
+                    </Row>
+                </div>
+            </div>
         );
+    }else{
+        return(<div></div>);
     }
 }
-
 export default DishDetail;
 

@@ -1,0 +1,11 @@
+nav{
+    background-color:#dff800;
+}
+nav a{
+    color: #2a2a2a;
+    margin-left: 15px;
+}
+.jumbotron{
+    background-color: #fcff35d3 !important;
+    color: rgba(0, 0, 0, 0.671) !important;
+}
